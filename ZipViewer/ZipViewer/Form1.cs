@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO.Compression;
 using System.Linq;
@@ -19,17 +20,36 @@ namespace ZipViewer
 
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
 
-            var z = ZipFile.Open(@"D:\Dorashiro\デスクトップ\新しいフォルダー (2).zip", ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
-            foreach (ZipArchiveEntry e in z.Entries)
+        private void flowLayoutPanel1_DragEnter(object sender, DragEventArgs e)
+        {
+            // DragEnterにこれを書くことでファイルのみ受け入れ可能になるらしい
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                PictureBox p = new PictureBox();
-                p.Size = new Size(100, 120);
-                p.SizeMode = PictureBoxSizeMode.CenterImage;
-                using (var img = Image.FromStream(e.Open()))
+                // 実際に受け入れをするのはここ
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void flowLayoutPanel1_DragDrop(object sender, DragEventArgs e)
+        {
+            var filePath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
+            if (Path.GetExtension(filePath) == ".zip")
+            {
+                flowLayoutPanel1.Controls.Clear();
+
+                var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
+                foreach (ZipArchiveEntry entry in z.Entries)
                 {
-                    p.Image = ThumbMaker.MakeThumb(img, 100, 120);
-                    flowLayoutPanel1.Controls.Add(p);
+                    PictureBox p = new PictureBox();
+                    p.Size = new Size(100, 120);
+                    p.SizeMode = PictureBoxSizeMode.CenterImage;
+                    using (var img = Image.FromStream(entry.Open()))
+                    {
+                        p.Image = ThumbMaker.MakeThumb(img, 100, 120);
+                        flowLayoutPanel1.Controls.Add(p);
+                    }
                 }
             }
         }
