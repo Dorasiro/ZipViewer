@@ -25,6 +25,7 @@ namespace ZipViewer
             {
                 PictureBox p = new PictureBox();
                 p.Size = new Size(100, 120);
+                p.SizeMode = PictureBoxSizeMode.CenterImage;
                 using (var img = Image.FromStream(e.Open()))
                 {
                     p.Image = ThumbMaker.MakeThumb(img, 100, 120);
