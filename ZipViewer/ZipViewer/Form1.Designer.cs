@@ -28,19 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.mainFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.SuspendLayout();
             // 
-            // flowLayoutPanel1
+            // mainFlowLayoutPanel
             // 
-            this.flowLayoutPanel1.AllowDrop = true;
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(800, 450);
-            this.flowLayoutPanel1.TabIndex = 0;
-            this.flowLayoutPanel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragDrop);
-            this.flowLayoutPanel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragEnter);
+            this.mainFlowLayoutPanel.AllowDrop = true;
+            this.mainFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.mainFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.mainFlowLayoutPanel.Name = "mainFlowLayoutPanel";
+            this.mainFlowLayoutPanel.Size = new System.Drawing.Size(800, 450);
+            this.mainFlowLayoutPanel.TabIndex = 0;
+            this.mainFlowLayoutPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragDrop);
+            this.mainFlowLayoutPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragEnter);
             // 
             // Form1
             // 
@@ -48,7 +49,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.flowLayoutPanel1);
+            this.Controls.Add(this.mainFlowLayoutPanel);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -57,6 +58,6 @@
 
         #endregion
 
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel mainFlowLayoutPanel;
     }
 }
