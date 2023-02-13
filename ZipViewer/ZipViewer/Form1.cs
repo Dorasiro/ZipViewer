@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ZipViewer
 {
@@ -34,6 +35,11 @@ namespace ZipViewer
                 Text = Path.GetFileName(filePath),
                 AutoSize = true
             };
+
+            // マウスを乗せたらフルパスを表示する
+            var tip = new System.Windows.Forms.ToolTip();
+            tip.InitialDelay = 200;
+            tip.SetToolTip(l, filePath);
 
             mainFlowLayoutPanel.Controls.Add(l);
 
