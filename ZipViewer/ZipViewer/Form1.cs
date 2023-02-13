@@ -29,7 +29,21 @@ namespace ZipViewer
                 throw new ArgumentException("zipファイルじゃない");
             }
 
-            mainFlowLayoutPanel.Controls.Clear();
+            // ファイル名のラベルを作る
+            var l = new Label()
+            {
+                Text = Path.GetFileName(filePath),
+                AutoSize = true
+            };
+
+            mainFlowLayoutPanel.Controls.Add(l);
+
+            // 画像表示用のパネルを作る
+            var showImgFlowLayoutPanel = new FlowLayoutPanel()
+            {
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                AutoSize = true,
+            };
 
             var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
             foreach (ZipArchiveEntry entry in z.Entries)
@@ -40,9 +54,11 @@ namespace ZipViewer
                 using (var img = Image.FromStream(entry.Open()))
                 {
                     p.Image = ThumbMaker.MakeThumb(img, 100, 120);
-                    mainFlowLayoutPanel.Controls.Add(p);
+                    showImgFlowLayoutPanel.Controls.Add(p);
                 }
             }
+
+            mainFlowLayoutPanel.Controls.Add(showImgFlowLayoutPanel);
         }
 
         private void flowLayoutPanel1_DragEnter(object sender, DragEventArgs e)

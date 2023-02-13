@@ -34,6 +34,7 @@
             // mainFlowLayoutPanel
             // 
             this.mainFlowLayoutPanel.AllowDrop = true;
+            this.mainFlowLayoutPanel.AutoScroll = true;
             this.mainFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.mainFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
