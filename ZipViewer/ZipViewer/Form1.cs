@@ -18,7 +18,6 @@ namespace ZipViewer
         {
             InitializeComponent();
 
-
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
