@@ -22,6 +22,29 @@ namespace ZipViewer
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
+        public void LoadZipFile(string filePath)
+        {
+            if(Path.GetExtension(filePath) != ".zip")
+            {
+                throw new ArgumentException("zipファイルじゃない");
+            }
+
+            mainFlowLayoutPanel.Controls.Clear();
+
+            var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
+            foreach (ZipArchiveEntry entry in z.Entries)
+            {
+                PictureBox p = new PictureBox();
+                p.Size = new Size(100, 120);
+                p.SizeMode = PictureBoxSizeMode.CenterImage;
+                using (var img = Image.FromStream(entry.Open()))
+                {
+                    p.Image = ThumbMaker.MakeThumb(img, 100, 120);
+                    mainFlowLayoutPanel.Controls.Add(p);
+                }
+            }
+        }
+
         private void flowLayoutPanel1_DragEnter(object sender, DragEventArgs e)
         {
             // DragEnterにこれを書くことでファイルのみ受け入れ可能になるらしい
@@ -34,24 +57,7 @@ namespace ZipViewer
 
         private void flowLayoutPanel1_DragDrop(object sender, DragEventArgs e)
         {
-            var filePath = ((string[])e.Data.GetData(DataFormats.FileDrop))[0];
-            if (Path.GetExtension(filePath) == ".zip")
-            {
-                flowLayoutPanel1.Controls.Clear();
-
-                var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
-                foreach (ZipArchiveEntry entry in z.Entries)
-                {
-                    PictureBox p = new PictureBox();
-                    p.Size = new Size(100, 120);
-                    p.SizeMode = PictureBoxSizeMode.CenterImage;
-                    using (var img = Image.FromStream(entry.Open()))
-                    {
-                        p.Image = ThumbMaker.MakeThumb(img, 100, 120);
-                        flowLayoutPanel1.Controls.Add(p);
-                    }
-                }
-            }
+            LoadZipFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]);
         }
     }
 }
