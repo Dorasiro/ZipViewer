@@ -15,6 +15,8 @@ namespace ZipViewer
 {
     public partial class Form1 : Form
     {
+        public static readonly string[] CanReadImageFormatArray = {".png", ".jpg", ".jpeg", ".bmp"};
+
         public Form1()
         {
             InitializeComponent();
@@ -50,15 +52,29 @@ namespace ZipViewer
                 AutoSize = true,
             };
 
+            // zipを開く
             var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
             foreach (ZipArchiveEntry entry in z.Entries)
             {
-                PictureBox p = new PictureBox();
-                p.Size = new Size(100, 120);
-                p.SizeMode = PictureBoxSizeMode.CenterImage;
-                using (var img = Image.FromStream(entry.Open()))
+                PictureBox p = new PictureBox()
                 {
-                    p.Image = ThumbMaker.MakeThumb(img, 100, 120);
+                    Size = new Size(100, 120),
+                    SizeMode = PictureBoxSizeMode.CenterImage
+                };
+                
+                // 読み込める拡張子が判定
+                if(CanReadImageFormatArray.Contains(Path.GetExtension(entry.Name)))
+                {
+                    using (var img = Image.FromStream(entry.Open()))
+                    {
+                        p.Image = ThumbMaker.MakeThumb(img, 100, 120);
+                        showImgFlowLayoutPanel.Controls.Add(p);
+                    }
+                }
+                else
+                {
+                    //Icon iconForFile = SystemIcons.WinLogo;
+                    //iconForFile = System.Drawing.Icon.ExtractAssociatedIcon(entry.Name);
                     showImgFlowLayoutPanel.Controls.Add(p);
                 }
             }
