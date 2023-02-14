@@ -56,6 +56,7 @@ namespace ZipViewer
             var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
             foreach (ZipArchiveEntry entry in z.Entries)
             {
+                // サムネ画像の表示スペース
                 PictureBox p = new PictureBox()
                 {
                     Size = new Size(100, 120),
@@ -68,15 +69,32 @@ namespace ZipViewer
                     using (var img = Image.FromStream(entry.Open()))
                     {
                         p.Image = ThumbMaker.MakeThumb(img, 100, 120);
-                        showImgFlowLayoutPanel.Controls.Add(p);
                     }
                 }
                 else
                 {
                     //Icon iconForFile = SystemIcons.WinLogo;
                     //iconForFile = System.Drawing.Icon.ExtractAssociatedIcon(entry.Name);
-                    showImgFlowLayoutPanel.Controls.Add(p);
                 }
+
+                // ファイル名を表示するラベル
+                var fileNameLabel = new Label()
+                {
+                    AutoSize = true,
+                    Text = entry.Name,
+                };
+
+                // 画像とファイル名を1セットにしたパネル
+                var imgAndNameFlowLayoutPanel = new FlowLayoutPanel()
+                {
+                    AutoSize = true,
+                    FlowDirection = FlowDirection.TopDown,
+                };
+
+                imgAndNameFlowLayoutPanel.Controls.Add(p);
+                imgAndNameFlowLayoutPanel.Controls.Add(fileNameLabel);
+
+                showImgFlowLayoutPanel.Controls.Add(imgAndNameFlowLayoutPanel);
             }
 
             mainFlowLayoutPanel.Controls.Add(showImgFlowLayoutPanel);
