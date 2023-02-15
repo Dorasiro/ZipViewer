@@ -63,7 +63,7 @@ namespace ZipViewer
                     SizeMode = PictureBoxSizeMode.CenterImage
                 };
                 
-                // 読み込める拡張子が判定
+                // 読み込める拡張子か判定
                 if(CanReadImageFormatArray.Contains(Path.GetExtension(entry.Name)))
                 {
                     using (var img = Image.FromStream(entry.Open()))
@@ -71,10 +71,27 @@ namespace ZipViewer
                         p.Image = ThumbMaker.MakeThumb(img, 100, 120);
                     }
                 }
+                // 読み込めない拡張子のとき
                 else
                 {
-                    //Icon iconForFile = SystemIcons.WinLogo;
-                    //iconForFile = System.Drawing.Icon.ExtractAssociatedIcon(entry.Name);
+                    // アイコン用のディレクトリを作る
+                    if(!Directory.Exists("icon"))
+                    {
+                        Directory.CreateDirectory("icon");
+                    }
+
+                    var iconFilePath = @"icon\icon" + Path.GetExtension(entry.Name);
+
+                    if (!File.Exists(iconFilePath))
+                    {
+                        File.Create(iconFilePath);
+                    }
+
+                    using (Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(iconFilePath))
+                    {
+                        p.Image = icon.ToBitmap();
+                    }
+                        
                 }
 
                 // ファイル名を表示するラベル
