@@ -31,8 +31,8 @@ namespace ZipViewer
                 throw new ArgumentException("zipファイルじゃない");
             }
 
-            // ファイル名のラベルを作る
-            var l = new Label()
+            // Zipファイルの名前を表示するラベルを作る
+            var zipFileName = new Label()
             {
                 Text = Path.GetFileName(filePath),
                 AutoSize = true
@@ -41,9 +41,9 @@ namespace ZipViewer
             // マウスを乗せたらフルパスを表示する
             var tip = new System.Windows.Forms.ToolTip();
             tip.InitialDelay = 200;
-            tip.SetToolTip(l, filePath);
+            tip.SetToolTip(zipFileName, filePath);
 
-            mainFlowLayoutPanel.Controls.Add(l);
+            mainFlowLayoutPanel.Controls.Add(zipFileName);
 
             // 画像表示用のパネルを作る
             var showImgFlowLayoutPanel = new FlowLayoutPanel()
@@ -82,11 +82,13 @@ namespace ZipViewer
 
                     var iconFilePath = @"icon\icon" + Path.GetExtension(entry.Name);
 
+                    // icon用の空ファイルがなければ作る
                     if (!File.Exists(iconFilePath))
                     {
                         File.Create(iconFilePath);
                     }
 
+                    // zipの中のファイルのアイコンを取得できないっぽいから拡張子だけ合わせた空ファイルを作ってそれのアイコンを拾ってくる仕組み
                     using (Icon icon = System.Drawing.Icon.ExtractAssociatedIcon(iconFilePath))
                     {
                         p.Image = icon.ToBitmap();
@@ -94,11 +96,13 @@ namespace ZipViewer
                         
                 }
 
-                // ファイル名を表示するラベル
-                var fileNameLabel = new Label()
+                // 画像ファイル名を表示するラベル
+                var imgNameLabel = new Label()
                 {
-                    AutoSize = true,
+                    //AutoSize = true,
+                    Width = 100,
                     Text = entry.Name,
+                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
                 };
 
                 // 画像とファイル名を1セットにしたパネル
@@ -109,7 +113,7 @@ namespace ZipViewer
                 };
 
                 imgAndNameFlowLayoutPanel.Controls.Add(p);
-                imgAndNameFlowLayoutPanel.Controls.Add(fileNameLabel);
+                imgAndNameFlowLayoutPanel.Controls.Add(imgNameLabel);
 
                 showImgFlowLayoutPanel.Controls.Add(imgAndNameFlowLayoutPanel);
             }
