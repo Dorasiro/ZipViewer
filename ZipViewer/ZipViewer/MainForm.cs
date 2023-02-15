@@ -13,11 +13,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ZipViewer
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         public static readonly string[] CanReadImageFormatArray = {".png", ".jpg", ".jpeg", ".bmp"};
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
