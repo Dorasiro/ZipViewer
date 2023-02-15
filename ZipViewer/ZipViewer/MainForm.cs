@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZipViewer.GUI;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ZipViewer
@@ -16,6 +17,7 @@ namespace ZipViewer
     public partial class MainForm : Form
     {
         public static readonly string[] CanReadImageFormatArray = {".png", ".jpg", ".jpeg", ".bmp"};
+        private List<string> readFileList;
         private List<FlowLayoutPanel> showImgFlowLayoutPanelList;
         private List<Panel> splitLinePanelList;
 
@@ -24,16 +26,38 @@ namespace ZipViewer
             InitializeComponent();
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            readFileList= new List<string>();
             showImgFlowLayoutPanelList = new List<FlowLayoutPanel>();
             splitLinePanelList = new List<Panel>();
         }
 
         public void LoadZipFile(string filePath)
         {
+            if(!File.Exists(filePath))
+            {
+                var hook = new FormMessageBoxHook();
+                hook.SetHook(this);
+                MessageBox.Show("ファイルが存在しない、もしくはフォルダなので無理です。");
+                return;
+            }
+
             if(Path.GetExtension(filePath) != ".zip")
             {
-                throw new ArgumentException("zipファイルじゃない");
+                var hook = new FormMessageBoxHook();
+                hook.SetHook(this);
+                MessageBox.Show("zipファイルじゃないのは無理です。");
+                return;
             }
+
+            if(readFileList.Contains(filePath))
+            {
+                var hook = new FormMessageBoxHook();
+                hook.SetHook(this);
+                MessageBox.Show("そのファイルは既に読み込まれています。"+Environment.NewLine+filePath);
+                return;
+            }
+
+            readFileList.Add(filePath);
 
             // Zipファイルの名前を表示するラベルを作る
             var zipFileName = new Label()
@@ -155,7 +179,11 @@ namespace ZipViewer
 
         private void flowLayoutPanel1_DragDrop(object sender, DragEventArgs e)
         {
-            LoadZipFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]);
+            //LoadZipFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]);
+            foreach(var file in (string[])e.Data.GetData(DataFormats.FileDrop))
+            {
+                LoadZipFile(file);
+            }
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
