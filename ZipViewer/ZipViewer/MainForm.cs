@@ -17,6 +17,7 @@ namespace ZipViewer
     {
         public static readonly string[] CanReadImageFormatArray = {".png", ".jpg", ".jpeg", ".bmp"};
         private List<FlowLayoutPanel> showImgFlowLayoutPanelList;
+        private List<Panel> splitLinePanelList;
 
         public MainForm()
         {
@@ -24,6 +25,7 @@ namespace ZipViewer
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             showImgFlowLayoutPanelList = new List<FlowLayoutPanel>();
+            splitLinePanelList = new List<Panel>();
         }
 
         public void LoadZipFile(string filePath)
@@ -45,6 +47,17 @@ namespace ZipViewer
             if(showImgFlowLayoutPanelList.Count > 0)
             {
                 zipFileName.Margin = new Padding(0, 20, 0, 0);
+
+                var p = new Panel()
+                {
+                    BorderStyle = BorderStyle.FixedSingle,
+                    //Anchor = AnchorStyles.Left | AnchorStyles.Right,
+                    Height = 1,
+                    Width = mainFlowLayoutPanel.ClientSize.Width-7,
+                };
+                splitLinePanelList.Add(p);
+
+                mainFlowLayoutPanel.Controls.Add(p);
             }
 
             // マウスを乗せたらフルパスを表示する
@@ -143,6 +156,15 @@ namespace ZipViewer
         private void flowLayoutPanel1_DragDrop(object sender, DragEventArgs e)
         {
             LoadZipFile(((string[])e.Data.GetData(DataFormats.FileDrop))[0]);
+        }
+
+        private void MainForm_Resize(object sender, EventArgs e)
+        {
+            foreach (var p in splitLinePanelList)
+            {
+                p.Height = 1;
+                p.Width = mainFlowLayoutPanel.Width - 7;
+            }
         }
     }
 }
