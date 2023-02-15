@@ -16,12 +16,14 @@ namespace ZipViewer
     public partial class MainForm : Form
     {
         public static readonly string[] CanReadImageFormatArray = {".png", ".jpg", ".jpeg", ".bmp"};
+        private List<FlowLayoutPanel> showImgFlowLayoutPanelList;
 
         public MainForm()
         {
             InitializeComponent();
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            showImgFlowLayoutPanelList = new List<FlowLayoutPanel>();
         }
 
         public void LoadZipFile(string filePath)
@@ -36,7 +38,14 @@ namespace ZipViewer
             {
                 Text = Path.GetFileName(filePath),
                 AutoSize = true,
+                Font = new Font("ＭＳ Ｐゴシック", 16, FontStyle.Bold),
             };
+
+            // 読み込んだ時pファイルが２個目以上の時はマージンの幅を変える
+            if(showImgFlowLayoutPanelList.Count > 0)
+            {
+                zipFileName.Margin = new Padding(0, 20, 0, 0);
+            }
 
             // マウスを乗せたらフルパスを表示する
             var tip = new System.Windows.Forms.ToolTip();
@@ -51,6 +60,7 @@ namespace ZipViewer
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
                 AutoSize = true,
             };
+            showImgFlowLayoutPanelList.Add(showImgFlowLayoutPanel);
 
             // zipを開く
             var z = ZipFile.Open(filePath, ZipArchiveMode.Read, System.Text.Encoding.GetEncoding("Shift_JIS"));
