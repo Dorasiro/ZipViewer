@@ -41,6 +41,7 @@
             this.mainFlowLayoutPanel.Name = "mainFlowLayoutPanel";
             this.mainFlowLayoutPanel.Size = new System.Drawing.Size(800, 450);
             this.mainFlowLayoutPanel.TabIndex = 0;
+            this.mainFlowLayoutPanel.WrapContents = false;
             this.mainFlowLayoutPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragDrop);
             this.mainFlowLayoutPanel.DragEnter += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragEnter);
             // 

@@ -35,14 +35,14 @@ namespace ZipViewer
             var zipFileName = new Label()
             {
                 Text = Path.GetFileName(filePath),
-                AutoSize = true
+                AutoSize = true,
             };
 
             // マウスを乗せたらフルパスを表示する
             var tip = new System.Windows.Forms.ToolTip();
             tip.InitialDelay = 200;
             tip.SetToolTip(zipFileName, filePath);
-
+            
             mainFlowLayoutPanel.Controls.Add(zipFileName);
 
             // 画像表示用のパネルを作る
@@ -93,29 +93,28 @@ namespace ZipViewer
                     {
                         p.Image = icon.ToBitmap();
                     }
-                        
                 }
 
                 // 画像ファイル名を表示するラベル
                 var imgNameLabel = new Label()
                 {
-                    //AutoSize = true,
                     Width = 100,
                     Text = entry.Name,
-                    Anchor = AnchorStyles.Left | AnchorStyles.Right,
                 };
 
                 // 画像とファイル名を1セットにしたパネル
-                var imgAndNameFlowLayoutPanel = new FlowLayoutPanel()
+                var imgAndNameTableLayoutPanel = new TableLayoutPanel()
                 {
                     AutoSize = true,
-                    FlowDirection = FlowDirection.TopDown,
+                    ColumnCount = 1,
+                    RowCount = 2,
+                    Anchor = AnchorStyles.Left,
                 };
 
-                imgAndNameFlowLayoutPanel.Controls.Add(p);
-                imgAndNameFlowLayoutPanel.Controls.Add(imgNameLabel);
+                imgAndNameTableLayoutPanel.Controls.Add(p);
+                imgAndNameTableLayoutPanel.Controls.Add(imgNameLabel);
 
-                showImgFlowLayoutPanel.Controls.Add(imgAndNameFlowLayoutPanel);
+                showImgFlowLayoutPanel.Controls.Add(imgAndNameTableLayoutPanel);
             }
 
             mainFlowLayoutPanel.Controls.Add(showImgFlowLayoutPanel);
