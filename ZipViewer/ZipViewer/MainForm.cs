@@ -159,6 +159,17 @@ namespace ZipViewer
                     p.Parent.BackColor = DefaultBackColor;
                 };
 
+                p.MouseClick += (sender, e) =>
+                {
+                    var imgViewer = new ImgViewer();
+                    using (var img = Image.FromStream(entry.Open()))
+                    {
+                        imgViewer.SetImage(img);
+                        imgViewer.ShowDialog(this);
+                    }
+                    
+                };
+
                 // 画像ファイル名を表示するラベル
                 var imgNameLabel = new Label()
                 {
