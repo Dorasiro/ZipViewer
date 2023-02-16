@@ -21,6 +21,11 @@ namespace ZipViewer
         private List<FlowLayoutPanel> showImgFlowLayoutPanelList;
         private List<Panel> splitLinePanelList;
 
+        // マウスを乗せた時の色
+        public static readonly Color FileSelectColor = Color.LightBlue;
+        // クリックして選択したときの色
+        public static readonly Color FileClickColor = Color.LightSkyBlue;
+
         public MainForm()
         {
             InitializeComponent();
@@ -144,11 +149,31 @@ namespace ZipViewer
                     }
                 }
 
+                p.MouseEnter += (sender, e) =>
+                {
+                    p.Parent.BackColor = FileSelectColor;
+                };
+
+                p.MouseLeave += (sender, e) =>
+                {
+                    p.Parent.BackColor = DefaultBackColor;
+                };
+
                 // 画像ファイル名を表示するラベル
                 var imgNameLabel = new Label()
                 {
                     Width = 100,
                     Text = entry.Name,
+                };
+
+                imgNameLabel.MouseEnter += (sender, e) =>
+                {
+                    imgNameLabel.Parent.BackColor = FileSelectColor;
+                };
+
+                imgNameLabel.MouseLeave += (sender, e) =>
+                {
+                    imgNameLabel.Parent.BackColor = DefaultBackColor;
                 };
 
                 // 画像とファイル名を1セットにしたパネル
@@ -158,6 +183,16 @@ namespace ZipViewer
                     ColumnCount = 1,
                     RowCount = 2,
                     Anchor = AnchorStyles.Left,
+                };
+
+                imgAndNameTableLayoutPanel.MouseEnter += (sender, e) =>
+                {
+                    imgAndNameTableLayoutPanel.BackColor = FileSelectColor;
+                };
+
+                imgAndNameTableLayoutPanel.MouseLeave += (sender, e) =>
+                {
+                    imgAndNameTableLayoutPanel.BackColor = DefaultBackColor;
                 };
 
                 imgAndNameTableLayoutPanel.Controls.Add(p);
