@@ -39,7 +39,7 @@
             this.mainFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.mainFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.mainFlowLayoutPanel.Name = "mainFlowLayoutPanel";
-            this.mainFlowLayoutPanel.Size = new System.Drawing.Size(800, 450);
+            this.mainFlowLayoutPanel.Size = new System.Drawing.Size(810, 450);
             this.mainFlowLayoutPanel.TabIndex = 0;
             this.mainFlowLayoutPanel.WrapContents = false;
             this.mainFlowLayoutPanel.DragDrop += new System.Windows.Forms.DragEventHandler(this.flowLayoutPanel1_DragDrop);
@@ -50,7 +50,7 @@
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(810, 450);
             this.Controls.Add(this.mainFlowLayoutPanel);
             this.Name = "MainForm";
             this.Text = "ZipViewer";

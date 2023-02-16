@@ -95,7 +95,9 @@ namespace ZipViewer
             var showImgFlowLayoutPanel = new FlowLayoutPanel()
             {
                 Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 AutoSize = true,
+                MaximumSize = new Size(mainFlowLayoutPanel.Width - 7, 9999999)
             };
             showImgFlowLayoutPanelList.Add(showImgFlowLayoutPanel);
 
@@ -192,6 +194,11 @@ namespace ZipViewer
             {
                 p.Height = 1;
                 p.Width = mainFlowLayoutPanel.Width - 7;
+            }
+
+            foreach(var p in showImgFlowLayoutPanelList)
+            {
+                p.MaximumSize = new Size(mainFlowLayoutPanel.Width - 7, 9999999);
             }
         }
     }
