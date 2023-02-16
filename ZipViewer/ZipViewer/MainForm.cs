@@ -90,9 +90,9 @@ namespace ZipViewer
             }
 
             // マウスを乗せたらフルパスを表示する
-            var tip = new System.Windows.Forms.ToolTip();
-            tip.InitialDelay = 200;
-            tip.SetToolTip(zipFileName, filePath);
+            var zipTip = new System.Windows.Forms.ToolTip();
+            zipTip.InitialDelay = 200;
+            zipTip.SetToolTip(zipFileName, filePath);
             
             mainFlowLayoutPanel.Controls.Add(zipFileName);
 
@@ -165,6 +165,11 @@ namespace ZipViewer
                     Width = 100,
                     Text = entry.Name,
                 };
+
+                // マウスを乗せたらフルのファイル名を表示する
+                var imgTip = new System.Windows.Forms.ToolTip();
+                imgTip.InitialDelay = 200;
+                imgTip.SetToolTip(imgNameLabel, Path.GetFileName(entry.Name));
 
                 imgNameLabel.MouseEnter += (sender, e) =>
                 {
