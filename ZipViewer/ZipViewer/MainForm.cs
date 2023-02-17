@@ -296,5 +296,20 @@ namespace ZipViewer
                 p.MaximumSize = new Size(mainFlowLayoutPanel.Width - 7, 9999999);
             }
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // 実行時引数としてzipファイルが指定されていた場合
+            if (Environment.GetCommandLineArgs().Length > 1)
+            {
+                foreach(var file in Environment.GetCommandLineArgs())
+                {
+                    if(Path.GetExtension(file) == ".zip")
+                    {
+                        LoadZipFile(file);
+                    }
+                }
+            }
+        }
     }
 }

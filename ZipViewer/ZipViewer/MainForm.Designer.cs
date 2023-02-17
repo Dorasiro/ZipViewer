@@ -54,6 +54,7 @@
             this.Controls.Add(this.mainFlowLayoutPanel);
             this.Name = "MainForm";
             this.Text = "ZipViewer";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.ResumeLayout(false);
 
