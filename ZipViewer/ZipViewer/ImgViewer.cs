@@ -26,9 +26,20 @@ namespace ZipViewer
             pictureBox.Image = img;
         }
 
-        private void pictureBox_Click(object sender, EventArgs e)
+        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            this.Close();
+            if(e.Button == MouseButtons.Left)
+            {
+                this.Close();
+            }
+            else if(e.Button == MouseButtons.XButton1)
+            {
+                SetImage(imgController.GetPreviousImg());
+            }
+            else if(e.Button == MouseButtons.XButton2)
+            {
+                SetImage(imgController.GetNextImg());
+            }
         }
 
         private void ImgViewer_KeyDown(object sender, KeyEventArgs e)
@@ -41,6 +52,11 @@ namespace ZipViewer
             {
                 SetImage(imgController.GetPreviousImg());
             }
+        }
+
+        private void ImgViewer_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.Close();
         }
     }
 }

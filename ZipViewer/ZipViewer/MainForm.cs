@@ -136,7 +136,6 @@ namespace ZipViewer
                     var imgName = filePath + "\\" + entry.Name;
                     imgNameList.Add(imgName);
                     imgDict.Add(imgName, img);
-                    nowShowingImg = imgName;
                 }
                 // 読み込めない拡張子のとき
                 else
@@ -175,7 +174,8 @@ namespace ZipViewer
                 p.MouseClick += (sender, e) =>
                 {
                     var imgViewer = new ImgViewer(this);
-                    imgViewer.SetImage(imgDict[filePath + "\\" + entry.Name]);
+                    nowShowingImg = filePath + "\\" + entry.Name;
+                    imgViewer.SetImage(imgDict[nowShowingImg]);
                     imgViewer.ShowDialog(this);
 
                 };
