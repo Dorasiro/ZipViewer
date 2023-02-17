@@ -175,12 +175,9 @@ namespace ZipViewer
                 p.MouseClick += (sender, e) =>
                 {
                     var imgViewer = new ImgViewer(this);
-                    using (var img = Image.FromStream(entry.Open()))
-                    {
-                        imgViewer.SetImage(img);
-                        imgViewer.ShowDialog(this);
-                    }
-                    
+                    imgViewer.SetImage(imgDict[filePath + "\\" + entry.Name]);
+                    imgViewer.ShowDialog(this);
+
                 };
 
                 // 画像ファイル名を表示するラベル
