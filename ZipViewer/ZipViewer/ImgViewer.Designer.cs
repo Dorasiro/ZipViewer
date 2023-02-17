@@ -41,6 +41,7 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            this.pictureBox.Click += new System.EventHandler(this.pictureBox_Click);
             // 
             // ImgViewer
             // 
@@ -49,8 +50,10 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(898, 626);
             this.Controls.Add(this.pictureBox);
+            this.KeyPreview = true;
             this.Name = "ImgViewer";
             this.Text = "ImgViewer";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImgViewer_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
 

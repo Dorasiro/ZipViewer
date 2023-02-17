@@ -14,12 +14,18 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ZipViewer
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IImgController
     {
         public static readonly string[] CanReadImageFormatArray = {".png", ".jpg", ".jpeg", ".bmp"};
         private List<string> readFileList;
         private List<FlowLayoutPanel> showImgFlowLayoutPanelList;
         private List<Panel> splitLinePanelList;
+        // 画像の表示順序を決めるためのリスト
+        private List<string> imgNameList;
+        // ファイル名と画像を関連付ける辞書
+        private Dictionary<string, Image> imgDict;
+        // 今表示中の画像ファイルの名前
+        private string nowShowingImg;
 
         // マウスを乗せた時の色
         public static readonly Color FileSelectColor = Color.LightBlue;
@@ -34,6 +40,8 @@ namespace ZipViewer
             readFileList= new List<string>();
             showImgFlowLayoutPanelList = new List<FlowLayoutPanel>();
             splitLinePanelList = new List<Panel>();
+            imgNameList = new List<string>();
+            imgDict= new Dictionary<string, Image>();
         }
 
         public void LoadZipFile(string filePath)
@@ -120,10 +128,15 @@ namespace ZipViewer
                 // 読み込める拡張子か判定
                 if(CanReadImageFormatArray.Contains(Path.GetExtension(entry.Name)))
                 {
-                    using (var img = Image.FromStream(entry.Open()))
-                    {
-                        p.Image = ThumbMaker.MakeThumb(img, 100, 120);
-                    }
+                    // imgをフィールドに保存するため、Disposeしていない。表示中のzipを消す処理をつけた時にDisposeすること。
+                    var img = Image.FromStream(entry.Open());
+                    p.Image = ThumbMaker.MakeThumb(img, 100, 120);
+
+                    // ImgViewer用
+                    var imgName = filePath + "\\" + entry.Name;
+                    imgNameList.Add(imgName);
+                    imgDict.Add(imgName, img);
+                    nowShowingImg = imgName;
                 }
                 // 読み込めない拡張子のとき
                 else
@@ -161,7 +174,7 @@ namespace ZipViewer
 
                 p.MouseClick += (sender, e) =>
                 {
-                    var imgViewer = new ImgViewer();
+                    var imgViewer = new ImgViewer(this);
                     using (var img = Image.FromStream(entry.Open()))
                     {
                         imgViewer.SetImage(img);
@@ -218,6 +231,40 @@ namespace ZipViewer
             }
 
             mainFlowLayoutPanel.Controls.Add(showImgFlowLayoutPanel);
+        }
+
+        /// <summary>
+        /// 指定したファイル名の画像の次の画像を返す
+        /// </summary>
+        /// <returns></returns>
+        public Image GetNextImg()
+        {
+            var nextIndex = imgNameList.IndexOf(nowShowingImg) + 1;
+            if(imgNameList.Count <= nextIndex)
+            {
+                nowShowingImg = imgNameList[0];
+                return imgDict[nowShowingImg];
+            }
+
+            nowShowingImg = imgNameList[nextIndex];
+            return imgDict[nowShowingImg];
+        }
+
+        /// <summary>
+        /// 指定したファイル名の画像の前の画像を返す
+        /// </summary>
+        /// <returns></returns>
+        public Image GetPreviousImg()
+        {
+            var prevIndex = imgNameList.IndexOf(nowShowingImg) - 1;
+            if(0 > prevIndex)
+            {
+                nowShowingImg = imgNameList[imgNameList.Count - 1];
+                return imgDict[nowShowingImg];
+            }
+
+            nowShowingImg = imgNameList[prevIndex];
+            return imgDict[nowShowingImg];
         }
 
         private void flowLayoutPanel1_DragEnter(object sender, DragEventArgs e)
